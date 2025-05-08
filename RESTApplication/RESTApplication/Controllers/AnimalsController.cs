@@ -8,7 +8,7 @@ namespace RESTApplication.Controllers
     [ApiController]
     public class AnimalsController : ControllerBase
     {
-        static private int _id = 1;
+        static private int _id = 0;
         static List<Animal> animals = new List<Animal>
         {
             new Animal()
@@ -90,6 +90,28 @@ namespace RESTApplication.Controllers
             return CreatedAtAction(nameof(GetById), new { id = animalToBeCrated.Id }, animalToBeCrated);
         }
         
-        
+        // PUT: https://localhost:XXXX/api/animals/{id}
+        [HttpPut]
+        [Route("{id:int}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] Animal animal)
+        {
+            var animalToBeUpdated = animals.FirstOrDefault(a => a.Id == id);
+            if (animalToBeUpdated == null)
+            {
+                return NotFound();
+            }
+
+            //Zasymulowanie modyfikacji rekordu w BD
+            var postedAnimal = animals[id] = new Animal
+            {
+                Id = id,
+                Name = animal.Name,
+                Category = animal.Category,
+                Mass = animal.Mass,
+                Color = animal.Color
+            };
+
+            return Ok(postedAnimal);
+        }
     }
 }
