@@ -8,7 +8,7 @@ namespace RESTApplication.Controllers
     [ApiController]
     public class AnimalsController : ControllerBase
     {
-        List<Animal> animals = new List<Animal>
+        static List<Animal> animals = new List<Animal>
         {
             new Animal()
             {
@@ -52,11 +52,25 @@ namespace RESTApplication.Controllers
             }
         };
         
-        //GET api/animals
+        // GET api/animals
         [HttpGet]
         public IActionResult Get()
         {
             return Ok(animals);
+        }
+        
+        // GET: https://localhost:XXXX/api/animals/{id}
+        [HttpGet]
+        [Route("{id:int}")]
+        public IActionResult GetById([FromRoute] int id)
+        {
+            var animal = animals.FirstOrDefault(a => a.Id == id);
+            if (animal == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(animal);
         }
     }
 }
