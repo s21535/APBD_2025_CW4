@@ -113,5 +113,22 @@ namespace RESTApplication.Controllers
 
             return Ok(postedAnimal);
         }
+        
+        // DELETE: https://localhost:XXXX/api/animals/{id}
+        [HttpDelete]
+        [Route("{id:int}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            var animalToBeDeleted = animals.FirstOrDefault(a => a.Id == id);
+            if (animalToBeDeleted == null)
+            {
+                return NotFound();
+            }
+
+            //Zasymulowanie usunięcie rekordu w BD
+            animals.RemoveAt(animalToBeDeleted.Id);
+
+            return Ok(animalToBeDeleted);
+        }
     }
 }
