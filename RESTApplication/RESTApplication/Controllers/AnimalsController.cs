@@ -130,5 +130,19 @@ namespace RESTApplication.Controllers
 
             return Ok(animalToBeDeleted);
         }
+        
+        // GET: https://localhost:XXXX/api/animals/{name}
+        [HttpGet]
+        [Route("{name}")]
+        public IActionResult GetByName([FromRoute] string name)
+        {
+            var animalFound = animals.Where(a => a.Name == name).ToList();
+            if (animalFound == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(animalFound);
+        }
     }
 }
