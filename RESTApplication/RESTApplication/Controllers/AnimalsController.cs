@@ -8,11 +8,12 @@ namespace RESTApplication.Controllers
     [ApiController]
     public class AnimalsController : ControllerBase
     {
+        static private int _id = 1;
         static List<Animal> animals = new List<Animal>
         {
             new Animal()
             {
-                Id = 1,
+                Id = _id++,
                 Name = "Psotka",
                 Category = "Pies",
                 Mass = 2.5f,
@@ -20,7 +21,7 @@ namespace RESTApplication.Controllers
             },
             new Animal()
             {
-                Id = 2,
+                Id = _id++,
                 Name = "Mamrotek",
                 Category = "Kot",
                 Mass = 2.1f,
@@ -28,7 +29,7 @@ namespace RESTApplication.Controllers
             },
             new Animal()
             {
-                Id = 3,
+                Id = _id++,
                 Name = "Lenny",
                 Category = "Ryba",
                 Mass = 0.5f,
@@ -36,7 +37,7 @@ namespace RESTApplication.Controllers
             },
             new Animal()
             {
-                Id = 4,
+                Id = _id++,
                 Name = "Jerry",
                 Category = "Mysz",
                 Mass = 0.2f,
@@ -44,7 +45,7 @@ namespace RESTApplication.Controllers
             },
             new Animal()
             {
-                Id = 5,
+                Id = _id++,
                 Name = "Miluś",
                 Category = "Pies",
                 Mass = 10.5f,
@@ -72,5 +73,23 @@ namespace RESTApplication.Controllers
 
             return Ok(animal);
         }
+        
+        // POST: https://localhost:XXXX/api/animals
+        [HttpPost]
+        public IActionResult Create([FromBody] Animal animal)
+        {
+            var animalToBeCrated = new Animal
+            {
+                Id = _id++,
+                Name = animal.Name,
+                Category = animal.Category,
+                Color = animal.Color,
+                Mass = animal.Mass,
+            };
+            animals.Add(animalToBeCrated); // Zasymulowane dodanie rekordu do BD
+            return CreatedAtAction(nameof(GetById), new { id = animalToBeCrated.Id }, animalToBeCrated);
+        }
+        
+        
     }
 }
